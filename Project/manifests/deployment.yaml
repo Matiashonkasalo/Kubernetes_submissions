@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project-dep
+spec:
+  selector:
+    matchLabels:
+      app: project-dep
+  template:
+    metadata:
+      labels:
+        app: project-dep
+    spec:
+      containers:
+      - name: project
+        image: matiashonkasalo/project:1.2  
