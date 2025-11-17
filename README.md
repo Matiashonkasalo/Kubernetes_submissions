@@ -9,3 +9,5 @@
 - [1.4](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/1.4/Project)
 
 - [1.5](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/1.5/Project)
+
+- [1.6](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/1.6/Project)
