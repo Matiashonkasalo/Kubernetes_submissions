@@ -12,7 +12,7 @@ print(f"Server started in port {port}]")
 
 @app.get("/")
 def root():
-    return "Hello!"
+    return "Hello! Yay!"
 
 
 if __name__ == "__main__":
