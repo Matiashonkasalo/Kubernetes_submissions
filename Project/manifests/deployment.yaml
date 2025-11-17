@@ -14,3 +14,9 @@ spec:
       containers:
       - name: project
         image: matiashonkasalo/project:1.5  
+        env: 
+          - name: PORT
+            value: "8000"
+
+
+
