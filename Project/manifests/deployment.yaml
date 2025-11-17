@@ -5,15 +5,15 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: project-dep
+      app: project
   template:
     metadata:
       labels:
-        app: project-dep
+        app: project
     spec:
       containers:
       - name: project
-        image: matiashonkasalo/project:1.51  
+        image: matiashonkasalo/project:1.6  
         env: 
           - name: PORT
             value: "8000"
