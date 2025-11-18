@@ -17,3 +17,5 @@
 - [1.8](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/1.8/Project)
 
 - [1.9](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/1.9)
+
+- [1.10](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/1.10/log_output)
