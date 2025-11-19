@@ -21,3 +21,5 @@
 - [1.10](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/1.10/log_output)
 
 - [1.11](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/1.11)
+
+- [1.12](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/1.12)
