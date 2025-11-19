@@ -27,7 +27,33 @@
 </head>
 <body>
     <h1>The project App</h1>
+
     <img src="/image" alt="Random Image">
+
     <p>DevOps with Kubernetes 2025</p>
-</body>
-</html>
+
+    <!-- Input for todos -->
+    <div style="margin-top: 40px;">
+        <h2>Todo List</h2>
+
+    <!-- Input field with maxlength -->
+    <input 
+        type="text" 
+        placeholder="Enter your todo..."
+        maxlength="140"
+        style="width: 70%; padding: 10px; font-size: 18px;"
+    />
+
+    <!-- Send button -->
+    <button style="padding: 10px 20px; font-size: 18px;">
+        Create todo
+    </button>
+
+    <!-- Hardcoded todos -->
+    <ul style="margin-top: 20px; font-size: 20px;">
+        <li>Take a Walk</li>
+        <li>Finish Kubernetes exercise</li>
+        <li>Walk the dog</li>
+    </ul>
+</div>
+
