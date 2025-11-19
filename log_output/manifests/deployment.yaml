@@ -13,20 +13,25 @@ spec:
         app: log-output
     spec:
       containers:
+
         - name: writer
-          image: matiashonkasalo/log-output:1.5
+          image: matiashonkasalo/log-output:1.6
           volumeMounts:
             - name: logs
               mountPath: /shared
+
         - name: reader
-          image: matiashonkasalo/reader:1.2
+          image: matiashonkasalo/reader:1.3
           ports:
             - containerPort: 3000
           volumeMounts:
             - name: logs
               mountPath: /shared
+
       volumes:
         - name: logs
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: pvc-dep 
+
         
 

@@ -12,5 +12,17 @@ spec:
         app: pingpong
     spec:
       containers:
+
       - name: pingpong
-        image: matiashonkasalo/pingpong:1.0
+        image: matiashonkasalo/pingpong:1.1
+        ports:
+         - containerPort: 3001
+        volumeMounts:
+          - name: shared-storage
+            mountPath: /shared
+      
+      volumes: 
+        - name: shared-storage
+          persistentVolumeClaim:
+            claimName: pvc-dep
+
