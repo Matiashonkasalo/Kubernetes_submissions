@@ -13,10 +13,20 @@ spec:
     spec:
       containers:
       - name: project
-        image: matiashonkasalo/project:1.7
+        image: matiashonkasalo/project:1.10
         env: 
           - name: PORT
             value: "8000"
+        volumeMounts: 
+          - name: image-cache
+            mountPath: /shared
+
+      volumes:
+        - name: image-cache
+          persistentVolumeClaim:
+            claimName: project-pvc
+          
+          
 
 
 
