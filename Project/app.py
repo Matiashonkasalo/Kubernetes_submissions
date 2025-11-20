@@ -32,7 +32,6 @@ def update_image():
     with open(CACHE_TIMESTAMP, "w") as f:
         f.write(str(time.time()))
 
-    
 @app.get("/")
 def home():
     print("Request received!")

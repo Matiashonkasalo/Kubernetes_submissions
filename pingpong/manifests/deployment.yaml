@@ -14,15 +14,9 @@ spec:
       containers:
 
       - name: pingpong
-        image: matiashonkasalo/pingpong:1.1
+        image: matiashonkasalo/pingpong:1.2
         ports:
          - containerPort: 3001
-        volumeMounts:
-          - name: shared-storage
-            mountPath: /shared
       
-      volumes: 
-        - name: shared-storage
-          persistentVolumeClaim:
-            claimName: pvc-dep
+    
 

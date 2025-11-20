@@ -21,7 +21,7 @@ spec:
               mountPath: /shared
 
         - name: reader
-          image: matiashonkasalo/reader:1.3
+          image: matiashonkasalo/reader:1.41
           ports:
             - containerPort: 3000
           volumeMounts:
