@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>The Project App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+        }
+        img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 22px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>The Project App</h1>
+
+    <img src="/image" alt="Random Image">
+
+    <p>DevOps with Kubernetes 2025</p>
+
+    <div style="margin-top: 40px;">
+        <h2>Todo List</h2>
+
+        <!-- Form that sends todo to frontend Flask -->
+        <form action="/todos" method="post" style="margin-bottom: 20px;">
+            <input 
+                type="text" 
+                name="content"
+                placeholder="Enter your todo..."
+                maxlength="140"
+                required
+                style="width: 70%; padding: 10px; font-size: 18px;"
+            />
+
+            <button type="submit" style="padding: 10px 20px; font-size: 18px;">
+                Create todo
+            </button>
+        </form>
+
+        <!-- Dynamic todos coming from backend -->
+        <ul style="font-size: 20px;">
+            {% for todo in todos %}
+                <li>{{ todo }}</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+</body>
+</html>
+
+

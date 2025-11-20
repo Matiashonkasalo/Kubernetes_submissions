@@ -12,7 +12,6 @@ spec:
         app: pingpong
     spec:
       containers:
-
       - name: pingpong
         image: matiashonkasalo/pingpong:1.2
         ports:
