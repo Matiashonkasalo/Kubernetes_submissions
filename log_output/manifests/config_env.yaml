@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: log-configmap-env
+  namespace: exercises
+data:
+  MESSAGE: "hello world"

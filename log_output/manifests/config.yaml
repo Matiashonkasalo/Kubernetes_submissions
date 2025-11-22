@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: log-configmap-file
+  namespace: exercises
+data:
+  information.txt: "this text is from file"

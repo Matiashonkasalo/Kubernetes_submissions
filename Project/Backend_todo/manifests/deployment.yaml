@@ -3,11 +3,11 @@ kind: Deployment
 metadata:
   name: backend-deployment
   namespace: project
-spec:
+spec: # deployments selector
   selector:
     matchLabels:
       app: backend 
-  template:
+  template: #pods template labels must match with deployments selector
     metadata:
       labels:
         app: backend

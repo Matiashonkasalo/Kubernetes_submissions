@@ -8,7 +8,6 @@ LOG_PATH = "/shared/log.txt"
 #LOG_PATH_PONG = "/shared/pongcount.txt"
 PINGPONG_URL = "http://pingpong-svc:3456/pings" 
 
-
 @app.get("/status")
 def file_read():
     #### read the whole log-file if not found raise error
@@ -21,28 +20,38 @@ def file_read():
     
 @app.get("/")
 def status():
-
-    ## 1) open the log-file and read the current status
     try:
         with open(LOG_PATH, "r") as f:
             lines = f.readlines()
-        if lines:
-            last_log = lines[-1].strip()
-        else:
-            last_log = "No logs yet"
+        last_log = lines[-1].strip() if lines else "No logs yet"
     except FileNotFoundError:
-        return "Log file not found"
-    
-    ### 2) fetch the data over http
+        last_log = "Log file not found"
 
     try: 
         response = requests.get(PINGPONG_URL)
         pong_count = response.text
     except:
         pong_count = "0"
-    
-    return f"{last_log} \n Ping / Pongs: {pong_count}"
 
+    message = os.getenv("MESSAGE", "nothing found")
+
+    try:
+        with open("/etc/config/information.txt", "r") as f:
+            file_content = f.read().strip()
+    except FileNotFoundError:
+        file_content = "File not found"
+
+    return (
+        f"file content: {file_content}\n"
+        f"env variable: MESSAGE={message}\n"
+        f"{last_log}\n"
+        f"Ping / Pongs: {pong_count}"
+    )
+
+
+@app.get("/debug-check")
+def debug_check():
+    return "You are hitting the reader container!"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=port)

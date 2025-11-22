@@ -16,23 +16,34 @@ spec:
       containers:
 
         - name: writer
-          image: matiashonkasalo/log-output:1.6
+          image: matiashonkasalo/log-output:1.7
           volumeMounts:
             - name: logs
               mountPath: /shared
 
         - name: reader
-          image: matiashonkasalo/reader:1.41
+          image: matiashonkasalo/reader:1.65
           ports:
             - containerPort: 3000
           volumeMounts:
             - name: logs
               mountPath: /shared
+            - name: configmap-volume
+              mountPath: /etc/config
+
+          envFrom:
+            - configMapRef:
+                name: log-configmap-env
 
       volumes:
         - name: logs
           persistentVolumeClaim:
             claimName: pvc-dep 
+        
+        - name: configmap-volume
+          configMap:
+            name: log-configmap-file
+
 
         
 
