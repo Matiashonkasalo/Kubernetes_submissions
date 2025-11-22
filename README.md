@@ -34,6 +34,8 @@
 
 -  [2.4](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/2.4)
 
+-   [2.5](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/2.5/log_output)
+
 
 
 
