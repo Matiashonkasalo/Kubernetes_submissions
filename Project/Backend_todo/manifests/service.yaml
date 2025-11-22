@@ -6,6 +6,6 @@ spec:
   selector:
     app: backend
   ports:
-  - port: 1345
+  - port: 1345 #frontdoor to my service
     targetPort: 3002
     protocol: TCP
