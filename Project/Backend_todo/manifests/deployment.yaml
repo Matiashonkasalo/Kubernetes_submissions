@@ -14,7 +14,8 @@ spec: # deployments selector
     spec:
       containers:
       - name: backend
-        image: matiashonkasalo/backend:1.12
-        ports:
-          - containerPort: 3002
+        image: matiashonkasalo/backend:1.13
+        env: 
+          - name: PORT
+            value: "3002"
 
