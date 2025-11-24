@@ -37,7 +37,8 @@
 -   [2.5](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/2.5/log_output)
 
 - [2.6](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/2.6/Project)
-
+  
+- [2.7](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/2.7/pingpong)
 
 
 
