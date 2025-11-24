@@ -1,13 +1,17 @@
 from flask import Flask, request, jsonify
 import os
+import psycopg2
+
 
 port = int(os.getenv("PORT", 3002))
 app = Flask(__name__)
 
 print(f"Backend server running on {port}")
-##apista klick -> tänne appedn list
 
-list_of_todos = []
+POSTGRES_URL = os.getenv("POSTGRES_URL")
+
+def get_connection():
+    return psycopg2.connect(POSTGRES_URL)
 
 ##receiving new a new todo and updating the list
 @app.post("/todos")
@@ -18,14 +22,25 @@ def getting_todos():
     content = data["content"]
     if len(content)>140:
         return "Todo is over 140 characters, try again"
-    
-    list_of_todos.append(content)
+    conn = get_connection()
+    curr = conn.cursor()
+    curr.execute("INSERT INTO todos (content) VALUES (%s)", (content,))
+    conn.commit()
+    curr.close()
+    conn.close()
     return "OK", 200
 
 #tranfering the todos back to front
 @app.get("/todos")
 def transfer_todos():
-    return jsonify(list_of_todos)
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT content FROM todos;")
+    rows = cur.fetchall()
+    todos = [r[0] for r in rows]
+    cur.close()
+    conn.close()
+    return jsonify(todos)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=port)
