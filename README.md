@@ -40,6 +40,8 @@
   
 - [2.7](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/2.7/pingpong)
 
+- [2.8](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/2.8/Project)
+
 
 
 
