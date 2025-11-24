@@ -6,7 +6,6 @@ app = Flask(__name__)
 
 print(f"Backend server running on {port}")
 ##apista klick -> tänne appedn list
-Frontend_URL = "http://project-svc:1234"
 
 list_of_todos = []
 

@@ -6,13 +6,15 @@ import os
 app = Flask(__name__)
 
 #reading port using environmental variable
-
-port = int(os.getenv("PORT",8000))
 MAX_AGE = 600
-CACHE_IMAGE = "/shared/image.jpg"
-CACHE_TIMESTAMP = "/shared/timestamp.txt"
+port = int(os.getenv("PORT",8000))
+CACHE_IMAGE = os.getenv("CACHE_IMAGE", "image not found")
+CACHE_TIMESTAMP = os.getenv("CACHE_TIMESTAMP", "timestamp not found")
+TODO_BACKEND_URL = os.getenv("TODO_BACKEND_URL", "Backend URL not found")
+IMAGE_SOURCE_URL = os.getenv("IMAGE_SOURCE_URL", "Image source not found")
+
+
 print(f"Server started in port {port}")
-TODO_BACKEND_URL = "http://backend-service:1345/todos"
 
 def valid_cache():
     if not os.path.exists(CACHE_IMAGE):
@@ -27,7 +29,7 @@ def valid_cache():
     return (time.time() - ts) < MAX_AGE
 
 def update_image():
-    response = requests.get("https://picsum.photos/1200")
+    response = requests.get(IMAGE_SOURCE_URL)
     with open(CACHE_IMAGE, "wb") as f:
         f.write(response.content)
     with open(CACHE_TIMESTAMP, "w") as f:
