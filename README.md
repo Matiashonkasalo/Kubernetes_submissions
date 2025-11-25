@@ -44,6 +44,8 @@
 
 - [2.9](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/2.9/Project)
 
+- [2.10](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/2.10/Project)
+
 
 
 
