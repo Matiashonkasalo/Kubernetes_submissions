@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
 import os
 import psycopg2
+import logging
 
+logging.basicConfig(level=logging.INFO)
 
 port = int(os.getenv("PORT", 3002))
 app = Flask(__name__)
@@ -13,15 +15,20 @@ POSTGRES_URL = os.getenv("POSTGRES_URL")
 def get_connection():
     return psycopg2.connect(POSTGRES_URL)
 
-##receiving new a new todo and updating the list
+##receiving a new todo and updating the list
 @app.post("/todos")
 def getting_todos():
     data = request.get_json() 
     if not data or "content" not in data:
+        logging.warning("Todo is rejected (content not found)")
         return "Missing todo content", 400
+    
     content = data["content"]
-    if len(content)>140:
-        return "Todo is over 140 characters, try again"
+    logging.info(f"Received todo: {content}")
+
+    if len(content) > 140:
+        logging.warning(f"Todo rejected (too long): length={len(content)}")
+        return "Todo too long", 400
     conn = get_connection()
     curr = conn.cursor()
     curr.execute("INSERT INTO todos (content) VALUES (%s)", (content,))
