@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: pingpong
-        image: matiashonkasalo/pingpong:1.41
+        image: matiashonkasalo/pingpong:1.42
         ports:
          - containerPort: 3001
         env:
