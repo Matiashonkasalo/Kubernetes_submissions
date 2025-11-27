@@ -32,7 +32,7 @@ def increment_counter():
 
 #####
     
-@app.get("/pingpong")
+@app.get("/")
 def pong():
     increment_counter()
     current_count = get_counter_from_db()
