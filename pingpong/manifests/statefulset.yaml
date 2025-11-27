@@ -29,6 +29,7 @@ spec:
         volumeMounts:
           - name: postgres-data
             mountPath: /var/lib/postgresql/data
+            subPath: postgres
 
   volumeClaimTemplates:
     - metadata:
@@ -39,7 +40,6 @@ spec:
         resources:
           requests:
             storage: 1Gi
-        storageClassName: local-path
 ---
 apiVersion: v1
 kind: Service
