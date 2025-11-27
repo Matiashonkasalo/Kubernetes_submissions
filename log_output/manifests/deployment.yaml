@@ -16,13 +16,13 @@ spec:
       containers:
 
         - name: writer
-          image: matiashonkasalo/log-output:1.7
+          image: matiashonkasalo/log-output:1.8
           volumeMounts:
             - name: logs
               mountPath: /shared
 
         - name: reader
-          image: matiashonkasalo/reader:1.65
+          image: matiashonkasalo/reader:1.7
           ports:
             - containerPort: 3000
           volumeMounts:
@@ -43,6 +43,20 @@ spec:
         - name: configmap-volume
           configMap:
             name: log-configmap-file
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-dep
+  namespace: exercises
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
 
 
         
