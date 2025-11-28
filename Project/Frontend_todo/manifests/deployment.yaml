@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: project
-        image: matiashonkasalo/project:2.3
+        image: PROJECT/FRONTEND
         env: 
           - name: PORT
             value: "8000"

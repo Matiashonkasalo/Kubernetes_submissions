@@ -14,10 +14,11 @@ spec: # deployments selector
     spec:
       containers:
       - name: backend
-        image: matiashonkasalo/backend:1.3
+        image: PROJECT/BACKEND
         env: 
           - name: PORT
             value: "3002"
           - name: POSTGRES_URL
-            value: "postgres://postgres:example@mystatefulset-0.project-postgres-service:5432/project"
+            value: postgres://postgres:example@project-postgres-service:5432/project
+
 
