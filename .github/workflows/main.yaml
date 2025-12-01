@@ -33,6 +33,14 @@ jobs:
 
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
+    - name: Debug environment
+      run: |
+        echo "PROJECT_ID=$PROJECT_ID"
+        echo "REGISTRY=$REGISTRY"
+        echo "BACKEND_REPO=$BACKEND_REPO"
+        echo "BACKEND_IMAGE=$BACKEND_IMAGE"
+        echo "BRANCH=$BRANCH"
+
 
     - name: 'Use gcloud CLI'
       run: gcloud info
