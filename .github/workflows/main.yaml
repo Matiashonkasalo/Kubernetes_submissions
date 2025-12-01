@@ -34,9 +34,12 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
 
+    - name: 'Use gcloud CLI'
+      run: gcloud info
+   
     # 3. Allow Docker to push to Artifact Registry
     - name: Configure Docker for Artifact Registry
-      run: gcloud --quiet auth configure-docker $REGISTRY
+      run: gcloud --quiet auth configure-docker
 
     # 4. Connect to your GKE cluster
     - name: Get GKE credentials
