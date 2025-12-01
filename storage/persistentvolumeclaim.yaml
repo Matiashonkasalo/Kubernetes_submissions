@@ -4,7 +4,6 @@ metadata:
   name: pvc-dep #link to deployment
   namespace: exercises
 spec:
-  storageClassName: log-output-pv #link pvc-pv
   accessModes:
     - ReadWriteOnce 
   resources:
