@@ -12,8 +12,33 @@ print(f"Backend server running on {port}")
 
 POSTGRES_URL = os.getenv("POSTGRES_URL")
 
+
 def get_connection():
     return psycopg2.connect(POSTGRES_URL)
+
+
+#### create db and check if there exists todo table 
+def init_db():
+    """Create the todos table if it does not exist."""
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS todos (
+                id SERIAL PRIMARY KEY,
+                content TEXT
+            );
+        """)
+        conn.commit()
+        cur.close()
+        conn.close()
+        logging.info("Database initialized successfully.")
+    except Exception as e:
+        logging.error(f"Database initialization failed: {e}")
+
+# Initialize DB at startup
+init_db()
+
 
 ##receiving a new todo and updating the list
 @app.post("/todos")
