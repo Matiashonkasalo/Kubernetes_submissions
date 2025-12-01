@@ -22,79 +22,72 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Get your code
-    - name: Checkout
-      uses: actions/checkout@v4
+      # 1. Checkout code
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    # 2. Login to Google Cloud
-    - uses: google-github-actions/auth@v2
-      with:
-        credentials_json: '${{ secrets.GKE_SA_KEY }}'
+      # 2. Google Cloud auth
+      - uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GKE_SA_KEY }}'
 
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v2
-    - name: Debug environment
-      run: |
-        echo "PROJECT_ID=$PROJECT_ID"
-        echo "REGISTRY=$REGISTRY"
-        echo "BACKEND_REPO=$BACKEND_REPO"
-        echo "BACKEND_IMAGE=$BACKEND_IMAGE"
-        echo "BRANCH=$BRANCH"
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
 
+      # 3. Enable Artifact Registry auth
+      - name: Configure Artifact Registry
+        run: gcloud auth configure-docker europe-north1-docker.pkg.dev
 
-    - name: 'Use gcloud CLI'
-      run: gcloud info
-   
-    # 3. Allow Docker to push to Artifact Registry
-    - name: Configure Docker for Artifact Registry
-      run: gcloud --quiet auth configure-docker
+      # 4. Connect to GKE
+      - name: Get GKE credentials
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          project_id: ${{ env.PROJECT_ID }}
+          location: ${{ env.GKE_ZONE }}
 
-    # 4. Connect to your GKE cluster
-    - name: Get GKE credentials
-      uses: google-github-actions/get-gke-credentials@v2
-      with:
-        cluster_name: ${{ env.GKE_CLUSTER }}
-        project_id: ${{ env.PROJECT_ID }}
-        location: ${{ env.GKE_ZONE }}
+      # 5. Form image names
+      - name: Form backend image tag
+        run: echo "BACKEND_TAG=$REGISTRY/$PROJECT_ID/$BACKEND_REPO/$BACKEND_IMAGE:$BRANCH-$GITHUB_SHA" >> $GITHUB_ENV
 
-    # 5. Form image tags
-    - name: Form backend image name
-      run: echo "BACKEND_TAG=$REGISTRY/$PROJECT_ID/$BACKEND_REPO/$BACKEND_IMAGE:$BRANCH-$GITHUB_SHA" >> $GITHUB_ENV
+      - name: Form frontend image tag
+        run: echo "FRONTEND_TAG=$REGISTRY/$PROJECT_ID/$FRONTEND_REPO/$FRONTEND_IMAGE:$BRANCH-$GITHUB_SHA" >> $GITHUB_ENV
 
-    - name: Form frontend image name
-      run: echo "FRONTEND_TAG=$REGISTRY/$PROJECT_ID/$FRONTEND_REPO/$FRONTEND_IMAGE:$BRANCH-$GITHUB_SHA" >> $GITHUB_ENV
+      # 6. Build images
+      - name: Build backend image
+        run: docker build ./Project/Backend_todo -t $BACKEND_TAG
 
-    # 6. Build images
-    - name: Build backend image
-      run: docker build ./Backend_todo -t $BACKEND_TAG
+      - name: Build frontend image
+        run: docker build ./Project/Frontend_todo -t $FRONTEND_TAG
 
-    - name: Build frontend image
-      run: docker build ./Frontend_todo -t $FRONTEND_TAG
+      # 7. Push images
+      - name: Push backend
+        run: docker push $BACKEND_TAG
 
-    # 7. Push images
-    - name: Push backend image
-      run: docker push $BACKEND_TAG
+      - name: Push frontend
+        run: docker push $FRONTEND_TAG
 
-    - name: Push frontend image
-      run: docker push $FRONTEND_TAG
+      # 8. Kustomize setup
+      - name: Set up Kustomize
+        uses: imranismail/setup-kustomize@v2.1.0
 
-    # 8. Set up Kustomize
-    - name: Set up Kustomize
-      uses: imranismail/setup-kustomize@v2.1.0
+      # 9. Deploy backend
+      - name: Deploy backend
+        run: |
+          cd Project/Backend_todo
+          kustomize edit set image PROJECT/BACKEND=$BACKEND_TAG
+          kustomize build . | kubectl apply -f -
+          kubectl rollout status deployment $BACKEND_DEPLOY -n project
 
-    # 9. Deploy updated images
-    - name: Deploy to GKE
-      run: |
-        # Update Kustomize image refs
-        kustomize edit set image PROJECT/BACKEND=$BACKEND_TAG
-        kustomize edit set image PROJECT/FRONTEND=$FRONTEND_TAG
+      # 10. Deploy frontend
+      - name: Deploy frontend
+        run: |
+          cd Project/Frontend_todo
+          kustomize edit set image PROJECT/FRONTEND=$FRONTEND_TAG
+          kustomize build . | kubectl apply -f -
+          kubectl rollout status deployment $FRONTEND_DEPLOY -n project
 
-        # Apply to cluster
-        kustomize build . | kubectl apply -f -
+      # 11. Show services
+      - name: Show services
+        run: kubectl get svc -n project -o wide
 
-        # Wait for rollouts
-        kubectl rollout status deployment $BACKEND_DEPLOY -n project
-        kubectl rollout status deployment $FRONTEND_DEPLOY -n project
-
-        # Show services
-        kubectl get svc -n project -o wide
