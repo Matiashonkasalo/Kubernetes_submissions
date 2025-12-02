@@ -1,0 +1,56 @@
+name: Delete environment on branch delete
+
+on:
+  delete:
+    branches:
+      - '*'
+
+env:
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GKE_CLUSTER: dwk-cluster
+  GKE_ZONE: europe-north1-b
+
+jobs:
+  delete-environment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show deleted ref
+        run: |
+          echo "Deleted branch: ${{ github.event.ref }}"
+
+
+      # Authenticate to Google Cloud
+      - uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GKE_SA_KEY }}'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      # Access GKE cluster
+      - name: Get GKE credentials
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          project_id: ${{ env.PROJECT_ID }}
+          location: ${{ env.GKE_ZONE }}
+
+      # Delete environment
+      - name: Delete namespace
+        run: |
+          BRANCH_NAME="${{ github.event.ref }}"
+          
+          # Extract branch name (refs/heads/mybranch → mybranch)
+          BRANCH_NAME="${BRANCH_NAME#refs/heads/}"
+
+          echo "Final branch name: $BRANCH_NAME"
+
+          if [ "$BRANCH_NAME" = "main" ]; then
+            echo "Main branch deleted — deleting 'project' namespace"
+            kubectl delete namespace project || true
+            exit 0
+          fi
+
+          echo "Deleting namespace: $BRANCH_NAME"
+          kubectl delete namespace "$BRANCH_NAME" || true
