@@ -62,5 +62,29 @@
 
 - [3.8](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/3.8)
 
+- 3.9 comparison between DBaas vs dyi:
 
+Pros of selecting dyi:
 
+	- It is cheaper than DBaas 
+	- Full control over database
+	- Easy to replicate environments using the same Kuberenetes manifest 
+	- More flexibility when customizing backups 
+Cons:
+
+	- I have to manage the db -> higher operational burden
+	- Backups are built manually
+	- Must set up manifests, StatefulSets, PVC's, Secrets, etc
+
+Pros of selecting DBaas:
+
+	- In our case, Google handles backups, replication,storage, monitoring, etc
+	- Reliable
+	- Simple initialization, click to create or use Terraform
+	- Auto-scaling
+	- High security
+
+Cons:
+	- Expensive
+	- Less control
+	- Using Google cloud SQL, then you must use multiple different google features -> moving away from google platform may be difficult
