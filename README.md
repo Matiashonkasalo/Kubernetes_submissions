@@ -62,7 +62,8 @@
 
 - [3.8](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/3.8)
 
-- 3.9 comparison between DBaas vs dyi:
+- [3.9](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/3.9/README.md)
+- Comparison between DBaas vs dyi:
 
 Pros of selecting dyi:
 
@@ -85,6 +86,7 @@ Pros of selecting DBaas:
 	- High security
 
 Cons:
+
 	- Expensive
 	- Less control
 	- Using Google cloud SQL, then you must use multiple different google features -> moving away from google platform may be difficult
