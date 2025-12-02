@@ -70,16 +70,16 @@ jobs:
       # 8. Kustomize setup
       - name: Set up Kustomize
         uses: imranismail/setup-kustomize@v2.1.0
+
       - name: Select namespace
-          run: |
-           if [ "${BRANCH}" = "main" ]; then
+        run: |
+          if [ "${BRANCH}" = "main" ]; then
             echo "NAMESPACE=project" >> $GITHUB_ENV
           else
             echo "NAMESPACE=${BRANCH}" >> $GITHUB_ENV
           fi
 
           echo "Deploying to namespace: $NAMESPACE"
-	
 
       # 9. Deploy backend
       - name: Deploy backend
