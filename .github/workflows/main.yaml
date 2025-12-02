@@ -71,21 +71,38 @@ jobs:
       - name: Set up Kustomize
         uses: imranismail/setup-kustomize@v2.1.0
 
+      - name: Select namespace
+        run: |
+          if [ "${BRANCH}" = "main" ]; then
+            echo "NAMESPACE=project" >> $GITHUB_ENV
+          else
+            echo "NAMESPACE=${BRANCH}" >> $GITHUB_ENV
+          fi
+
+          echo "Deploying to namespace: $NAMESPACE"
+	
+
       # 9. Deploy backend
       - name: Deploy backend
         run: |
           cd Project/Backend_todo
+	  kubectl create namespace $NAMESPACE || true
+	  kubectl config set-context --current --namespace=$NAMESPACE
+	  kustomize edit set namespace $NAMESPACE
           kustomize edit set image PROJECT/BACKEND=$BACKEND_TAG
           kustomize build . | kubectl apply -f -
-          kubectl rollout status deployment $BACKEND_DEPLOY -n project
+          kubectl rollout status deployment $BACKEND_DEPLOY -n $NAMESPACE
 
       # 10. Deploy frontend
       - name: Deploy frontend
         run: |
           cd Project/Frontend_todo
+          kubectl create namespace $NAMESPACE || true
+	  kubectl config set-context --current --namespace=$NAMESPACE
+	  kustomize edit set namespace $NAMESPACE
           kustomize edit set image PROJECT/FRONTEND=$FRONTEND_TAG
           kustomize build . | kubectl apply -f -
-          kubectl rollout status deployment $FRONTEND_DEPLOY -n project
+          kubectl rollout status deployment $FRONTEND_DEPLOY -n $NAMESPACE
 
       # 11. Show services
       - name: Show services
