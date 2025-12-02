@@ -86,9 +86,9 @@ jobs:
       - name: Deploy backend
         run: |
           cd Project/Backend_todo
-	  kubectl create namespace $NAMESPACE || true
-	  kubectl config set-context --current --namespace=$NAMESPACE
-	  kustomize edit set namespace $NAMESPACE
+          kubectl create namespace $NAMESPACE || true
+          kubectl config set-context --current --namespace=$NAMESPACE
+          kustomize edit set namespace $NAMESPACE
           kustomize edit set image PROJECT/BACKEND=$BACKEND_TAG
           kustomize build . | kubectl apply -f -
           kubectl rollout status deployment $BACKEND_DEPLOY -n $NAMESPACE
@@ -98,8 +98,8 @@ jobs:
         run: |
           cd Project/Frontend_todo
           kubectl create namespace $NAMESPACE || true
-	  kubectl config set-context --current --namespace=$NAMESPACE
-	  kustomize edit set namespace $NAMESPACE
+          kubectl config set-context --current --namespace=$NAMESPACE
+          kustomize edit set namespace $NAMESPACE
           kustomize edit set image PROJECT/FRONTEND=$FRONTEND_TAG
           kustomize build . | kubectl apply -f -
           kubectl rollout status deployment $FRONTEND_DEPLOY -n $NAMESPACE
