@@ -6,7 +6,9 @@ metadata:
 spec: # deployments selector
   selector:
     matchLabels:
-      app: backend 
+      app: backend
+  strategy:
+    type: Recreate
   template: #pods template labels must match with deployments selector
     metadata:
       labels:

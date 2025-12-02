@@ -78,7 +78,6 @@ jobs:
           else
             echo "NAMESPACE=${BRANCH}" >> $GITHUB_ENV
           fi
-
           echo "Deploying to namespace: $NAMESPACE"
 
       # 9. Deploy backend
