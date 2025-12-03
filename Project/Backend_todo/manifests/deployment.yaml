@@ -22,5 +22,12 @@ spec: # deployments selector
             value: "3002"
           - name: POSTGRES_URL
             value: postgres://postgres:example@project-postgres-service:5432/project
+        resources:
+          requests:
+            cpu: "25m"
+            memory: "50Mi"
+          limits:
+            cpu: "100m"
+            memory: "150Mi"
 
 
