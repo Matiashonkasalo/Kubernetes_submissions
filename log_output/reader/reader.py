@@ -48,6 +48,18 @@ def status():
         f"Ping / Pongs: {pong_count}"
     )
 
+@app.get("/healthz")
+def get_health():
+    try:
+        response = requests.get(PINGPONG_URL)
+        status_code = response.status_code
+        if status_code == 200:
+            return "OK", 200
+        else:
+            return "Pingpong is not ready", 500
+    except:
+        return "pingpong not reachable", 500
+    
 
 @app.get("/debug-check")
 def debug_check():

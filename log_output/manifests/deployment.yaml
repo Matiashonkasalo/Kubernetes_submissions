@@ -4,6 +4,8 @@ metadata:
   name: log-output-dep
   namespace: exercises
 spec:
+  strategy:
+    type: Recreate
   replicas: 1
   selector:
     matchLabels:
@@ -16,13 +18,13 @@ spec:
       containers:
 
         - name: writer
-          image: matiashonkasalo/log-output:1.8
+          image: matiashonkasalo/log-output:2.0
           volumeMounts:
             - name: logs
               mountPath: /shared
 
         - name: reader
-          image: matiashonkasalo/reader:1.7
+          image: matiashonkasalo/reader:2.0
           ports:
             - containerPort: 3000
           volumeMounts:
@@ -34,6 +36,14 @@ spec:
           envFrom:
             - configMapRef:
                 name: log-configmap-env
+
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+
 
       volumes:
         - name: logs
