@@ -104,3 +104,5 @@ Cons:
 -  [4.3](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/4.3/Project/images)
 
 -  [4.4](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/4.4/pingpong)
+
+-   [4.5](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/4.5/Project)
