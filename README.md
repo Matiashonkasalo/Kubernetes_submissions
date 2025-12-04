@@ -98,3 +98,5 @@ Cons:
 -   [3.12](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/3.12/Project)
 
 -   [4.1](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/4.1)
+
+-  [4.2](https://github.com/Matiashonkasalo/Kubernetes_submissions/tree/4.2/Project)
