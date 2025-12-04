@@ -5,8 +5,9 @@ resources:
   - manifests/config.yaml
   - manifests/deployment.yaml
   - manifests/service.yaml
-  - manifests/ingress.yaml
   - manifests/pvc.yaml
+  - manifests/gateway.yaml
+  - manifests/route.yaml
 images:
   - name: PROJECT/FRONTEND
-    newName: europe-north1-docker.pkg.dev/dwk-gke-123456/frontend-repo/frontend-todo
+    newName: europe-north1-docker.pkg.dev/dwk-gke-123456/frontend-repo/frontend-todo:v2

@@ -36,8 +36,6 @@ def init_db():
     except Exception as e:
         logging.error(f"Database initialization failed: {e}")
 
-# Initialize DB at startup
-init_db()
 
 
 ##receiving a new todo and updating the list
@@ -62,6 +60,23 @@ def getting_todos():
     conn.close()
     return "OK", 200
 
+@app.get("/healthz")
+def pod_ready():
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT 1;")
+        cur.fetchone()
+        cur.close()
+        conn.close()
+        return "OK", 200
+    except:
+        return "Couldn't open db", 500
+    
+@app.get("/livez")
+def pod_alive():
+    return "POD OK", 200
+
 #tranfering the todos back to front
 @app.get("/todos")
 def transfer_todos():
@@ -75,4 +90,7 @@ def transfer_todos():
     return jsonify(todos)
 
 if __name__ == "__main__":
+
+    # Initialize DB at startup
+    init_db()
     app.run(host="0.0.0.0", port=port)

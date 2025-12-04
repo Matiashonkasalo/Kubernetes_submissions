@@ -29,5 +29,17 @@ spec: # deployments selector
           limits:
             cpu: "100m"
             memory: "150Mi"
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 3002
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          httpGet: 
+            path: /livez
+            port: 3002
+          initialDelaySeconds: 10
+          periodSeconds: 10
 
 
