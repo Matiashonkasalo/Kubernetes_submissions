@@ -60,6 +60,34 @@ def todos_to_back():
     )
     ##redirect the page
     return redirect("/")
+
+
+@app.post("/todos/<id>")
+def update_todo_frontend(id):
+    """
+    This receives the form submission from the HTML.
+    It converts it into a real PUT request for the backend.
+    """
+
+    # Check if the form requests a PUT
+    method = request.form.get("_method", "").upper()
+    if method != "PUT":
+        return "Invalid method", 400
+
+    # Read the new "done" value from the form
+    done_value = request.form.get("done", "false").lower() == "true"
+
+    # Forward the update to the backend
+    requests.put(
+        f"{TODO_BACKEND_URL}/{id}",
+        json={"done": done_value}
+    )
+    # Go back to the main page
+    return redirect("/")
+
+
+
+
     
 @app.get("/healthz")
 def healthz():

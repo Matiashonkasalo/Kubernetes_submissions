@@ -10,4 +10,4 @@ resources:
   - manifests/route.yaml
 images:
   - name: PROJECT/FRONTEND
-    newName: europe-north1-docker.pkg.dev/dwk-gke-123456/frontend-repo/frontend-todo:v2
+    newName: europe-north1-docker.pkg.dev/dwk-gke-123456/frontend-repo/frontend-todo:v3

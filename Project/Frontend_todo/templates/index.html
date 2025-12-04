@@ -23,6 +23,23 @@
             font-size: 22px;
             margin-top: 20px;
         }
+        h3 {
+            margin-top: 30px;
+            font-size: 26px;
+        }
+        li {
+            margin-bottom: 8px;
+            font-size: 20px;
+        }
+        .done {
+            color: gray;
+            text-decoration: line-through;
+        }
+        .mark-button {
+            margin-left: 20px;
+            padding: 5px 10px;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -36,7 +53,7 @@
     <div style="margin-top: 40px;">
         <h2>Todo List</h2>
 
-        <!-- Form that sends todo to frontend Flask -->
+        <!-- Create new todo form -->
         <form action="/todos" method="post" style="margin-bottom: 20px;">
             <input 
                 type="text" 
@@ -52,10 +69,32 @@
             </button>
         </form>
 
-        <!-- Dynamic todos coming from backend -->
-        <ul style="font-size: 20px;">
+        <!-- Todo (not done yet) -->
+        <h3>Todo</h3>
+        <ul>
             {% for todo in todos %}
-                <li>{{ todo }}</li>
+                {% if not todo.done %}
+                    <li>
+                        {{ todo.content }}
+                        
+                        <!-- Mark as done button -->
+                        <form action="/todos/{{ todo.id }}" method="post" style="display:inline;">
+                            <input type="hidden" name="_method" value="PUT">
+                            <input type="hidden" name="done" value="true">
+                            <button class="mark-button" type="submit">Mark done</button>
+                        </form>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+
+        <!-- Done todos -->
+        <h3>Done</h3>
+        <ul>
+            {% for todo in todos %}
+                {% if todo.done %}
+                    <li class="done">{{ todo.content }}</li>
+                {% endif %}
             {% endfor %}
         </ul>
 
@@ -63,5 +102,3 @@
 
 </body>
 </html>
-
-

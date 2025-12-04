@@ -11,5 +11,5 @@ resources:
 
 images:
   - name: PROJECT/BACKEND
-    newName: europe-north1-docker.pkg.dev/dwk-gke-123456/backend-repo/backend-todo:v2
+    newName: europe-north1-docker.pkg.dev/dwk-gke-123456/backend-repo/backend-todo:v3
     

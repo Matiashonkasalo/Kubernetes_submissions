@@ -17,18 +17,25 @@ def get_connection():
     return psycopg2.connect(POSTGRES_URL)
 
 
-#### create db and check if there exists todo table 
 def init_db():
-    """Create the todos table if it does not exist."""
     try:
         conn = get_connection()
         cur = conn.cursor()
+
+        # Create table
         cur.execute("""
             CREATE TABLE IF NOT EXISTS todos (
                 id SERIAL PRIMARY KEY,
                 content TEXT
             );
         """)
+
+        # Add "done" column if it doesn't exist
+        cur.execute("""
+            ALTER TABLE todos
+            ADD COLUMN IF NOT EXISTS done BOOLEAN DEFAULT FALSE;
+        """)
+
         conn.commit()
         cur.close()
         conn.close()
@@ -77,17 +84,60 @@ def pod_ready():
 def pod_alive():
     return "POD OK", 200
 
-#tranfering the todos back to front
 @app.get("/todos")
 def transfer_todos():
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute("SELECT content FROM todos;")
+    
+    cur.execute("SELECT id, content, done FROM todos;")
     rows = cur.fetchall()
-    todos = [r[0] for r in rows]
+
+    todos = [
+        {"id": r[0], "content": r[1], "done": r[2]}
+        for r in rows
+    ]
+
     cur.close()
     conn.close()
     return jsonify(todos)
+
+@app.put("/todos/<int:id>")
+def update_todo(id):
+    data = request.get_json()
+    # Validate input
+    if "done" not in data:
+        return "Missing 'done' field", 400
+
+    done = data["done"]
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    # Update the todo and return the updated row
+    cur.execute("""
+        UPDATE todos
+        SET done = %s
+        WHERE id = %s
+        RETURNING id, content, done;
+    """, (done, id))
+
+    row = cur.fetchone()
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    if row is None:
+        return "Todo not found", 404
+
+    return jsonify({
+        "id": row[0],
+        "content": row[1],
+        "done": row[2]
+    })
+
+
+
+
 
 if __name__ == "__main__":
 
