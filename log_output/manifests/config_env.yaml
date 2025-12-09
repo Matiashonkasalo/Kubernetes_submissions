@@ -5,3 +5,5 @@ metadata:
   namespace: exercises
 data:
   MESSAGE: "hello world"
+  
+# trigger ci
