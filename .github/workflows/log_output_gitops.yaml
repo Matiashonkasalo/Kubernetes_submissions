@@ -1,0 +1,51 @@
+
+
+name: Log Output GitOps Deployment
+
+on:
+  push:
+    paths:
+      - "log_output/**"
+      - ".github/workflows/log_output_gitops.yaml"
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout repository
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Login to Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Build writer image
+      - name: Build writer image
+        run: |
+          docker build -t matiashonkasalo/log-output:${{ github.sha }} log_output/writer
+          docker push matiashonkasalo/log-output:${{ github.sha }}
+
+      # Build reader image
+      - name: Build reader image
+        run: |
+          docker build -t matiashonkasalo/reader:${{ github.sha }} log_output/reader
+          docker push matiashonkasalo/reader:${{ github.sha }}
+
+      # Update image tags in deployment.yaml
+      - name: Update deployment images
+        run: |
+          sed -i "s|image: matiashonkasalo/log-output:.*|image: matiashonkasalo/log-output:${{ github.sha }}|" log_output/manifests/deployment.yaml
+          sed -i "s|image: matiashonkasalo/reader:.*|image: matiashonkasalo/reader:${{ github.sha }}|" log_output/manifests/deployment.yaml
+
+      # Commit back to repo
+      - name: Commit manifest changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: "log_output/manifests/deployment.yaml"
+          message: "GitOps deploy log_output version ${{ github.sha }}"
+          push: true
