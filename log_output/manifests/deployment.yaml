@@ -18,13 +18,13 @@ spec:
       containers:
 
         - name: writer
-          image: matiashonkasalo/log-output:2.0
+          image: matiashonkasalo/log-output:e9196c35f9c639ca794f21c68f9f15a954555cfb
           volumeMounts:
             - name: logs
               mountPath: /shared
 
         - name: reader
-          image: matiashonkasalo/reader:2.0
+          image: matiashonkasalo/reader:e9196c35f9c639ca794f21c68f9f15a954555cfb
           ports:
             - containerPort: 3000
           volumeMounts:
