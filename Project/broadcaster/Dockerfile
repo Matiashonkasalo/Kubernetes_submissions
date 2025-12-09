@@ -3,15 +3,12 @@ FROM python:3.11-slim
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
-    libpq-dev \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY todo_back.py .
-COPY nats_client.py .
+COPY broadcaster.py . 
 
-CMD ["python", "todo_back.py"]
-
+CMD ["python","-u", "broadcaster.py"]

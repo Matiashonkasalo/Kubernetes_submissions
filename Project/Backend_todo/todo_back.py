@@ -2,15 +2,28 @@ from flask import Flask, request, jsonify
 import os
 import psycopg2
 import logging
+import asyncio
+from nats_client import publish_event
+import threading
 
 logging.basicConfig(level=logging.INFO)
-
 port = int(os.getenv("PORT", 3002))
+POSTGRES_URL = os.getenv("POSTGRES_URL")
 app = Flask(__name__)
+
 
 print(f"Backend server running on {port}")
 
-POSTGRES_URL = os.getenv("POSTGRES_URL")
+background_loop = asyncio.new_event_loop()
+
+def start_background_loop(loop):
+    asyncio.set_event_loop(loop)
+    loop.run_forever()
+
+# Start loop in dedicated background thread
+threading.Thread(target=start_background_loop, args=(background_loop,), daemon=True).start()
+
+
 
 
 def get_connection():
@@ -61,11 +74,27 @@ def getting_todos():
         return "Todo too long", 400
     conn = get_connection()
     curr = conn.cursor()
-    curr.execute("INSERT INTO todos (content) VALUES (%s)", (content,))
+    curr.execute(
+    "INSERT INTO todos (content) VALUES (%s) RETURNING id, content, done;",
+    (content,)
+    )
+    row = curr.fetchone()
     conn.commit()
     curr.close()
     conn.close()
-    return "OK", 200
+
+    todo = {
+        "id": row[0],
+        "content": row[1],
+        "done": row[2]
+    }
+    asyncio.run_coroutine_threadsafe(
+        publish_event("Todo_created", todo),
+        background_loop
+    )
+
+
+    return jsonify(todo), 201
 
 @app.get("/healthz")
 def pod_ready():
@@ -99,7 +128,7 @@ def transfer_todos():
 
     cur.close()
     conn.close()
-    return jsonify(todos)
+    return jsonify(todos), 200
 
 @app.put("/todos/<int:id>")
 def update_todo(id):
@@ -128,15 +157,19 @@ def update_todo(id):
 
     if row is None:
         return "Todo not found", 404
-
-    return jsonify({
+    
+    todo = {
         "id": row[0],
         "content": row[1],
         "done": row[2]
-    })
+    }
+    asyncio.run_coroutine_threadsafe(
+        publish_event("Todo_updated", todo),
+        background_loop
+    )
 
 
-
+    return jsonify(todo), 200
 
 
 if __name__ == "__main__":

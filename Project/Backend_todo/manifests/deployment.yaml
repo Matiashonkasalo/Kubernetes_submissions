@@ -20,8 +20,13 @@ spec: # deployments selector
         env: 
           - name: PORT
             value: "3002"
+
           - name: POSTGRES_URL
             value: postgres://postgres:example@project-postgres-service:5432/project
+          
+          - name: NATS_URL
+            value:  "nats://my-nats.project.svc.cluster.local:4222"
+
         resources:
           requests:
             cpu: "25m"

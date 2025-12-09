@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - Backend_todo
   - Frontend_todo
+  - broadcaster

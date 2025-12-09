@@ -86,8 +86,6 @@ def update_todo_frontend(id):
     return redirect("/")
 
 
-
-
     
 @app.get("/healthz")
 def healthz():
