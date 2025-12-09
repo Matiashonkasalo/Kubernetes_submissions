@@ -3,7 +3,7 @@ name: Release application
 on:
   push:
     paths:
-      - Project/**
+      - "Project/**"
     
 
 
