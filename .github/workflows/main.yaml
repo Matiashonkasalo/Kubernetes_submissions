@@ -2,10 +2,9 @@ name: Release application
 
 on:
   push:
-    branches:
-      - main
-    paths-ignore:
-      - "README.md"
+    paths:
+      - Project/**
+    
 
 
 env:
