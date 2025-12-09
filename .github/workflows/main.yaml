@@ -2,6 +2,11 @@ name: Release application
 
 on:
   push:
+    branches:
+      - main
+    paths-ignore:
+      - "README.md"
+
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
