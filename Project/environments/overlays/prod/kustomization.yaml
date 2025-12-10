@@ -7,3 +7,13 @@ resources:
   - ../../base
   
 namePrefix: production- 
+
+images:
+  - name: PROJECT/BACKEND
+    newName: europe-north1-docker.pkg.dev/dwk-gke-123456/backend-repo/backend-todo:v5
+
+  - name: PROJECT/FRONTEND
+    newName: europe-north1-docker.pkg.dev/dwk-gke-123456/frontend-repo/frontend-todo:v4
+
+  - name: PROJECT/BROADCAST
+    newName: europe-north1-docker.pkg.dev/dwk-gke-123456/broadcast-repo/broadcast:v7
