@@ -1,8 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: broadcast-dep
-  namespace: project
+  labels:
+    app: broadcast-pod
+$patch: strategic
 spec:
   template:
     spec:

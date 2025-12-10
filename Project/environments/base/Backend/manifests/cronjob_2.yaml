@@ -3,6 +3,8 @@ kind: CronJob
 metadata:
   name: todo-db-backup
   namespace: project
+  labels: 
+    app: todo-db-backup
 spec:
   schedule: "0 0 * * *"  # once per day at midnight
   jobTemplate:

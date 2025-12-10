@@ -1,13 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-deployment
+  labels:
+    app: backend
 $patch: strategic
 spec:
   template:
     spec:
       containers:
-      - name: backend-container
+      - name: backend
         env:
         - name: POSTGRES_URL
-          value: "postgres://postgres:example@staging-project-postgres-service:5432/project"
+          value: "postgres://postgres:example@$(DB_SERVICE):5432/project"

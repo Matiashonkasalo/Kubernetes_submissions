@@ -3,6 +3,8 @@ kind: CronJob
 metadata:
   name: random-todo-generator
   namespace: project
+  labels:
+    app: random-todo-generator
 spec:
   schedule: "0 * * * *"  
   jobTemplate:

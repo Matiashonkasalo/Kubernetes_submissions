@@ -8,11 +8,27 @@ resources:
 
 namePrefix: staging-
 
-patchesStrategicMerge:
-  - broadcaster_staging.yaml
-  - db_patch.yaml
-  - cronjob_patch.yaml
-  - service_db_patch.yaml
+patches:
+  - target:
+      kind: Deployment
+      labelSelector: "app=broadcast-pod"
+    path: broadcast_staging.yaml
+
+  - target:
+      kind: CronJob
+      labelSelector: "app=todo-db-backup"
+    path: db_patch.yaml.yaml
+    
+  - target:
+      kind: CronJob
+      labelSelector: "app=random-todo-generator"
+    path: cronjob_patch.yaml
+
+  - target:
+      kind: deployment 
+      labelSelector: "app=backend"
+    path: deployment_db_patch.yaml
+
 
 images:
   - name: PROJECT/BACKEND
