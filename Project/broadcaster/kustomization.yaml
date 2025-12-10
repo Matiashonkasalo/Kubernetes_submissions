@@ -8,4 +8,4 @@ resources:
 images:
 - name: PROJECT/BROADCAST
   newName: europe-north1-docker.pkg.dev/dwk-gke-123456/broadcast-repo/broadcast
-  newTag: main-8860b132981b78ab4b330e7c3c4dd3e9ec1d7878
+  newTag: main-43d0a2d67b6cd09cdb6746523d5e8c19bb8be48d
