@@ -28,6 +28,12 @@ patches:
       kind: deployment 
       labelSelector: "app=backend"
     path: deployment_db_patch.yaml
+    
+  - target:
+      kind: HTTPRoute
+      labelSelector: "app=project-route"
+    path: route_staging_patch.yaml
+
 
 
 images:

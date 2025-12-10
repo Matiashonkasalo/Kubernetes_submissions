@@ -8,6 +8,17 @@ resources:
   
 namePrefix: production- 
 
+patches:
+  - target:
+      kind: Deployment
+      labelSelector: "app=backend"
+    path: deployment_db_patch.yaml
+  - target:
+      kind: HTTPRoute
+      labelSelector: "app=project-route"
+    path: route_production_patch.yaml
+
+
 images:
   - name: PROJECT/BACKEND
     newName: europe-north1-docker.pkg.dev/dwk-gke-123456/backend-repo/backend-todo:v5
