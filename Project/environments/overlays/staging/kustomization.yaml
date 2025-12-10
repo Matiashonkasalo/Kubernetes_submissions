@@ -12,6 +12,7 @@ patchesStrategicMerge:
   - broadcaster_staging.yaml
   - db_patch.yaml
   - cronjob_patch.yaml
+  - service_db_patch.yaml
 
 images:
   - name: PROJECT/BACKEND
