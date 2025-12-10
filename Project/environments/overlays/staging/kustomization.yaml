@@ -12,7 +12,7 @@ patches:
   - target:
       kind: Deployment
       labelSelector: "app=broadcast-pod"
-    path: broadcast_staging.yaml
+    path: broadcaster_staging.yaml
 
   - target:
       kind: CronJob
