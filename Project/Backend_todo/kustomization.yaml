@@ -2,13 +2,14 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: project
 resources:
-  - manifests/namespace.yaml
-  - manifests/config.yaml
-  - manifests/deployment.yaml
-  - manifests/service.yaml
-  - manifests/cronjob.yaml
-  - manifests/StatefulSet.yaml
+- manifests/namespace.yaml
+- manifests/config.yaml
+- manifests/deployment.yaml
+- manifests/service.yaml
+- manifests/cronjob.yaml
+- manifests/StatefulSet.yaml
 
 images:
-  - name: PROJECT/BACKEND
-    newName: europe-north1-docker.pkg.dev/dwk-gke-123456/backend-repo/backend-todo:v10
+- name: PROJECT/BACKEND
+  newName: europe-north1-docker.pkg.dev/dwk-gke-123456/backend-repo/backend-todo
+  newTag: main-e4f983d862557b026d6e2b49ebd42f3bafc0b352
