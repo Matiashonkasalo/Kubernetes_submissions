@@ -11,4 +11,4 @@ resources:
 images:
 - name: PROJECT/FRONTEND
   newName: europe-north1-docker.pkg.dev/dwk-gke-123456/frontend-repo/frontend-todo
-  newTag: main-734ac487fb1d8a379718debe697995b69de9bfdf
+  newTag: main-ef88d45c5b642d6259a6850a50c7cbaea3c0fd3b
