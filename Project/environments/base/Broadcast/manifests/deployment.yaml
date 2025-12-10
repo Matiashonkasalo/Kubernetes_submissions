@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: broadcast-dep
   namespace: project
+  labels: 
+    app: broadcast-pod
 spec:
   replicas: 6
   selector:

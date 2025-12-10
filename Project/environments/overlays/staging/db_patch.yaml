@@ -1,6 +1,8 @@
 apiVersion: batch/v1
 kind: CronJob
-metadata: 
-  name: todo-db-backup
-  namespace: project
+metadata:
+  labels:
+    app: todo-db-backup
 $patch: delete
+
+

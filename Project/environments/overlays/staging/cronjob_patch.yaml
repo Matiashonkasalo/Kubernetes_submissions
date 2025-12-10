@@ -1,7 +1,8 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: random-todo-generator
-  namespace: project
+  labels:
+    app: random-todo-generator
 $patch: delete
+
 
