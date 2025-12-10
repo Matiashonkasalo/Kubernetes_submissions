@@ -1,0 +1,113 @@
+
+name: Project GitOps
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "Project/**"
+
+
+env:
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GKE_CLUSTER: dwk-cluster
+  GKE_ZONE: europe-north1-b
+  REGISTRY: europe-north1-docker.pkg.dev
+  BACKEND_REPO: backend-repo
+  FRONTEND_REPO: frontend-repo
+  BACKEND_IMAGE: backend-todo
+  FRONTEND_IMAGE: frontend-todo
+  BACKEND_DEPLOY: backend-deployment
+  FRONTEND_DEPLOY: project-dep
+  BRANCH: ${{ github.ref_name }}
+  BROADCAST_REPO: broadcast-repo	
+  BROADCAST_IMAGE: broadcast
+
+jobs:
+  Project-deploy-build:
+    runs-on: ubuntu-latest
+    steps:
+      #step 1) checkout 
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      #step 2) authenticate to google cloud
+      - uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{secrets.GKE_SA_KEY}}'
+      
+      #step 3) Setup Google 
+      - name: Google Client installation
+        uses: google-github-actions/setup-gcloud@v2
+      
+      #Step 4) Connect Artifact registry
+      - name: Artifact registry
+        run: gcloud auth configure-docker europe-north1-docker.pkg.dev
+      
+       # 5. Form image tags
+      - name: Form backend image tag
+        run: echo "BACKEND_TAG=$REGISTRY/$PROJECT_ID/$BACKEND_REPO/$BACKEND_IMAGE:$BRANCH-$GITHUB_SHA" >> $GITHUB_ENV
+
+      - name: Form frontend image tag
+        run: echo "FRONTEND_TAG=$REGISTRY/$PROJECT_ID/$FRONTEND_REPO/$FRONTEND_IMAGE:$BRANCH-$GITHUB_SHA" >> $GITHUB_ENV
+      
+      - name: Form Broadcast image tag
+        run: echo "BROADCAST_TAG=$REGISTRY/$PROJECT_ID/$BROADCAST_REPO/$BROADCAST_IMAGE:$BRANCH-$GITHUB_SHA" >> $GITHUB_ENV
+      
+      # 6. Build images
+      - name: Building backend image
+        run: docker build ./Project/Backend_todo -t $BACKEND_TAG
+      
+      - name: Building front image
+        run: docker build ./Project/Frontend_todo -t $FRONTEND_TAG
+
+      - name: Building broadcast image
+        run: docker build ./Project/broadcaster -t $BROADCAST_TAG
+
+      #7. Push images to Artifact registry
+      - name: Push Back
+        run: docker push $BACKEND_TAG
+      
+      - name: Push Front
+        run: docker push $FRONTEND_TAG
+
+      - name: Push Broadcast
+        run: docker push $BROADCAST_TAG
+      
+      #7. Setup kustomize
+      - name: Setup kustomize
+        uses: imranismail/setup-kustomize@v2
+
+      #8. Update image tags
+      - name: change backend tag
+        run: |
+          cd Project/Backend_todo
+          kustomize edit set image PROJECT/BACKEND=$BACKEND_TAG
+
+      - name: change front tag
+        run: |
+          cd Project/Frontend_todo
+          kustomize edit set image PROJECT/FRONTEND=$FRONTEND_TAG
+      
+      - name: change Broadcast tag
+        run: |
+          cd Project/broadcaster
+          kustomize edit set image PROJECT/BROADCAST=$BROADCAST_TAG
+      
+      #9. Commit changes
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: |
+            Project/Backend_todo/kustomization.yaml
+            Project/Frontend_todo/kustomization.yaml
+            Project/broadcaster/kustomization.yaml
+          message: Gitops deploy project version ${{ github.sha }}
+          push: true
+
+
+      
+    
+      
+   
