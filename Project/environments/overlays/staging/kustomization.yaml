@@ -8,7 +8,7 @@ resources:
 
 namePrefix: staging-
 
-patches:
+patchesStrategicMerge:
   - broadcaster_staging.yaml
   - db_patch.yaml
   - cronjob_patch.yaml
