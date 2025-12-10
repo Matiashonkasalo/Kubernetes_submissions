@@ -8,7 +8,7 @@ spec:
   template:
     spec:
       containers:
-      - name: backend-container
+      - name: backend
         env:
         - name: POSTGRES_URL
           value: "postgres://postgres:example@production-project-postgres-service:5432/project"
