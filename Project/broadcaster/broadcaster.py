@@ -6,9 +6,15 @@ from nats.aio.client import Client as NATS
 
 NATS_URL = os.getenv("NATS_URL", "nats://my-nats:4222")
 WEBHOOK_URL = os.getenv("WEBHOOK_URL") 
+BROADCAST_MODE = os.getenv("BROADCAST_MODE", "normal")
 
 async def send_to_webhook(message: dict):
     """Send formatted message to external service"""
+
+    if BROADCAST_MODE == "log_only":
+        print("[STAGING] LOG-ONLY MODE:", message)
+        return
+
     if not WEBHOOK_URL:
         print("WEBHOOK_URL is not set")
         return

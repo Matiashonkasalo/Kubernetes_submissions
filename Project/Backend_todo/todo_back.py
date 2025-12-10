@@ -24,8 +24,6 @@ def start_background_loop(loop):
 threading.Thread(target=start_background_loop, args=(background_loop,), daemon=True).start()
 
 
-
-
 def get_connection():
     return psycopg2.connect(POSTGRES_URL)
 
