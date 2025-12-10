@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: backend-deployment
   namespace: project
+  labels: 
+    app: backend
 spec: # deployments selector
   selector:
     matchLabels:
@@ -22,7 +24,7 @@ spec: # deployments selector
             value: "3002"
 
           - name: POSTGRES_URL
-            value: postgres://postgres:example@$(DB_SERVICE):5432/project
+            value: postgres://postgres:example@project-postgres-service:5432/project
           
           - name: NATS_URL
             value:  "nats://my-nats.project.svc.cluster.local:4222"

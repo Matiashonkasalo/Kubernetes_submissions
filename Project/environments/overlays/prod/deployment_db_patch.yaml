@@ -12,3 +12,5 @@ spec:
         env:
         - name: POSTGRES_URL
           value: "postgres://postgres:example@$(DB_SERVICE):5432/project"
+
+
