@@ -12,4 +12,4 @@ resources:
 images:
 - name: PROJECT/BACKEND
   newName: europe-north1-docker.pkg.dev/dwk-gke-123456/backend-repo/backend-todo
-  newTag: main-a65e1ddabe3eb8a71215a84810d31bee6e80cdfb
+  newTag: main-6d10dc25450512adae602dcb04148129d12bde52
