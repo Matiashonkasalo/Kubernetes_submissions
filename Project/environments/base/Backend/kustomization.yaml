@@ -4,11 +4,3 @@ kind: Kustomization
 resources:
   - manifests 
 
-vars:
-  - name: DB_SERVICE
-    objref:
-      kind: Service
-      name: project-postgres-service
-      apiVersion: v1
-    fieldref:
-      fieldpath: metadata.name

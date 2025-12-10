@@ -17,7 +17,7 @@ patches:
   - target:
       kind: CronJob
       labelSelector: "app=todo-db-backup"
-    path: db_patch.yaml.yaml
+    path: db_patch.yaml
     
   - target:
       kind: CronJob
@@ -25,10 +25,10 @@ patches:
     path: cronjob_patch.yaml
 
   - target:
-      kind: deployment 
+      kind: Deployment 
       labelSelector: "app=backend"
     path: deployment_db_patch.yaml
-    
+
   - target:
       kind: HTTPRoute
       labelSelector: "app=project-route"
