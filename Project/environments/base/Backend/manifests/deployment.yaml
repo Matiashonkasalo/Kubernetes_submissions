@@ -20,11 +20,12 @@ spec: # deployments selector
       - name: backend
         image: PROJECT/BACKEND
         env: 
-          - name: PORT
-            value: "3002"
 
           - name: POSTGRES_URL
             value: postgres://postgres:example@project-postgres-service:5432/project
+          
+          - name: PORT
+            value: "3002"
           
           - name: NATS_URL
             value:  "nats://my-nats.project.svc.cluster.local:4222"
